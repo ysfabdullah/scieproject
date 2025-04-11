@@ -383,7 +383,7 @@ footer {
     text-align: center;
     max-width: 800px;
     margin: 4rem auto;
-    padding: 2rem;
+    padding: 3rem;
     background: white;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -408,19 +408,29 @@ footer {
     border-radius: 2px;
 }
 
-.contact-info p {
-    margin: 1rem 0;
-    color: var(--text-color);
-    font-size: 1.1rem;
+.contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
 }
 
-.contact-info a {
+.contact-details p {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.contact-details a {
     color: var(--primary-color);
     text-decoration: none;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: inline-block;
 }
 
-.contact-info a:hover {
+.contact-details a:hover {
     color: var(--secondary-color);
-    text-decoration: underline;
+    background: var(--light-color);
+    transform: translateY(-2px);
 }
