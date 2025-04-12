@@ -33,16 +33,27 @@
             <div id="chatDisplay" class="chat-display">
                 <!-- Initial welcome message -->
                 <div class="message assistant-message">
-                    <strong>Assistant:</strong> Hello! I'm your AI education assistant. I'm here to help you learn about AI in education. You can ask me questions about:
-                    <ul>
-                        <li>How AI is transforming education</li>
-                        <li>Benefits and challenges of AI in learning</li>
-                        <li>Practical applications of AI in classrooms</li>
-                        <li>Future trends in educational technology</li>
-                    </ul>
-                    What would you like to learn about?
+                    <strong>Assistant:</strong> Hello! I'm your AI education assistant. I'm here to help you learn about AI in education. Choose a topic below or type your own question!
                 </div>
             </div>
+            
+            <div class="topics-container">
+                <div class="topics-grid">
+                    <button class="topic-btn" onclick="askQuestion('What is AI in education?')">What is AI in Education?</button>
+                    <button class="topic-btn" onclick="askQuestion('How does AI help in education?')">How AI Helps in Education</button>
+                    <button class="topic-btn" onclick="askQuestion('What are the benefits of AI in education?')">Benefits of AI</button>
+                    <button class="topic-btn" onclick="askQuestion('What are the challenges of AI in education?')">Challenges</button>
+                    <button class="topic-btn" onclick="askQuestion('How does AI help teachers?')">Help for Teachers</button>
+                    <button class="topic-btn" onclick="askQuestion('How does AI help students?')">Help for Students</button>
+                    <button class="topic-btn" onclick="askQuestion('What AI tools are used in education?')">AI Tools</button>
+                    <button class="topic-btn" onclick="askQuestion('What is the future of AI in education?')">Future Trends</button>
+                    <button class="topic-btn" onclick="askQuestion('What are examples of AI in education?')">Examples</button>
+                    <button class="topic-btn" onclick="askQuestion('Compare traditional and AI education')">Traditional vs AI</button>
+                    <button class="topic-btn" onclick="askQuestion('How to implement AI in education?')">Implementation</button>
+                    <button class="topic-btn" onclick="askQuestion('What are the costs of AI in education?')">Costs</button>
+                </div>
+            </div>
+
             <div class="input-container">
                 <input type="text" id="userInput" placeholder="Ask me anything about AI in education..." />
                 <button onclick="sendMessage()">Send</button>
@@ -53,6 +64,91 @@
     <footer>
         <p>&copy; 2025 SCIE 331 Final Project</p>
     </footer>
+
+    <style>
+        .chat-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .topics-container {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .topic-btn {
+            padding: 10px 15px;
+            background: #e3f2fd;
+            border: 1px solid #90caf9;
+            border-radius: 6px;
+            color: #1976d2;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            text-align: left;
+            white-space: normal;
+            min-height: 44px;
+        }
+
+        .topic-btn:hover {
+            background: #bbdefb;
+            transform: translateY(-1px);
+        }
+
+        .topic-btn:active {
+            transform: translateY(0);
+        }
+
+        .chat-display {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .input-container input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .input-container button {
+            padding: 10px 20px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .input-container button:hover {
+            background: #1565c0;
+        }
+    </style>
 
     <script>
         const bot = new RiveScript();
@@ -75,45 +171,19 @@
             ! array impact = impact effect influence change transform revolutionize
             ! array tools = tools technology systems software applications platforms programs
 
-            + (@greetings)
-            - Hello! I'm your AI education assistant. How can I help you learn about AI in education today?
-            - Hi there! I'm here to help you learn about AI in education. What would you like to know?
-            - Welcome! I'm your AI education guide. What aspects of AI in education interest you?
-
-            + what is [ai artificial intelligence]
-            - Artificial Intelligence (AI) is a technology that enables computers to learn from experience, understand complex tasks, and work in ways that resemble human intelligence. In education, AI helps create personalized learning experiences and assists teachers with various tasks.
-
-            + what is [education learning teaching]
-            - Education is the process of facilitating learning and acquiring knowledge, skills, values, and understanding. Modern education is being transformed by AI technologies to become more personalized, accessible, and effective for students of all backgrounds.
-
+            // Exact matches for button questions
             + what is ai in education
             - AI in education combines artificial intelligence technology with teaching and learning to create smarter, more personalized educational experiences. It includes tools for automated grading, personalized learning paths, intelligent tutoring systems, and data analytics to improve student outcomes.
 
-            + [*] (how|ways) [*] (@ai) [*] (@help|@impact) [*] (@education) [*]
-            - AI is transforming education in several important ways:\n
+            + how does ai help in education
+            - AI helps in education in several important ways:\n
             ^ • Creating personalized learning paths for each student\n
             ^ • Providing instant feedback and assessment\n
             ^ • Automating administrative tasks for teachers\n
             ^ • Offering 24/7 support through intelligent tutoring systems\n
             ^ • Analyzing learning patterns to improve educational methods
 
-            + [*] (@help|@impact) [*] student [*]
-            - AI helps students in multiple ways:\n
-            ^ • Providing personalized learning experiences\n
-            ^ • Offering immediate feedback on assignments\n
-            ^ • Identifying and filling knowledge gaps\n
-            ^ • Adapting to individual learning speeds\n
-            ^ • Making learning more engaging through interactive content
-
-            + [*] (@tools) [*] (@ai) [*] (@education) [*]
-            - Here are some common AI tools used in education:\n
-            ^ • Intelligent Tutoring Systems (ITS)\n
-            ^ • Automated Assessment Tools\n
-            ^ • Learning Management Systems (LMS)\n
-            ^ • Educational Chatbots\n
-            ^ • Adaptive Learning Platforms
-
-            + [*] benefit [*] (@ai) [*] (@education) [*]
+            + what are the benefits of ai in education
             - The key benefits of AI in education include:\n
             ^ • Personalized learning paths for each student\n
             ^ • 24/7 availability of learning resources\n
@@ -121,7 +191,7 @@
             ^ • Data-driven insights to improve educational outcomes\n
             ^ • Adaptive learning systems that adjust to student needs
 
-            + [*] (challenge|problem|issue|concern) [*] (@ai) [*] (@education) [*]
+            + what are the challenges of ai in education
             - Some major challenges in AI education include:\n
             ^ • Ensuring equal access to AI technology\n
             ^ • Protecting student privacy and data security\n
@@ -129,7 +199,7 @@
             ^ • Maintaining the human element in education\n
             ^ • Managing the cost of implementing AI solutions
 
-            + [*] (@help|@impact) [*] teacher [*]
+            + how does ai help teachers
             - AI helps teachers in several ways:\n
             ^ • Automating administrative tasks like grading\n
             ^ • Providing detailed analytics about student performance\n
@@ -137,7 +207,23 @@
             ^ • Creating customized lesson plans\n
             ^ • Identifying students who need extra help
 
-            + [*] future [*] (@ai) [*] (@education) [*]
+            + how does ai help students
+            - AI helps students in multiple ways:\n
+            ^ • Providing personalized learning experiences\n
+            ^ • Offering immediate feedback on assignments\n
+            ^ • Identifying and filling knowledge gaps\n
+            ^ • Adapting to individual learning speeds\n
+            ^ • Making learning more engaging through interactive content
+
+            + what ai tools are used in education
+            - Here are some common AI tools used in education:\n
+            ^ • Intelligent Tutoring Systems (ITS)\n
+            ^ • Automated Assessment Tools\n
+            ^ • Learning Management Systems (LMS)\n
+            ^ • Educational Chatbots\n
+            ^ • Adaptive Learning Platforms
+
+            + what is the future of ai in education
             - The future of AI in education looks promising with:\n
             ^ • More sophisticated personalized learning systems\n
             ^ • Virtual and augmented reality for immersive learning\n
@@ -145,7 +231,7 @@
             ^ • Intelligent tutoring systems that mimic human teachers\n
             ^ • Real-time feedback and assessment tools
 
-            + [*] example [*] (@ai) [*] (@education) [*]
+            + what are examples of ai in education
             - Here are some practical examples of AI in education:\n
             ^ • Intelligent tutoring systems that provide personalized help\n
             ^ • Automated grading systems for assignments and tests\n
@@ -153,7 +239,7 @@
             ^ • Learning analytics that track student progress\n
             ^ • Adaptive learning platforms that adjust to student needs
 
-            + [*] (difference|compare) [*] traditional [*] (@ai) [*] (@education) [*]
+            + compare traditional and ai education
             - Here are the key differences between traditional and AI-enhanced education:\n
             ^ • Traditional: One-size-fits-all vs. AI: Personalized learning paths\n
             ^ • Traditional: Periodic assessments vs. AI: Continuous feedback\n
@@ -161,7 +247,7 @@
             ^ • Traditional: Limited availability vs. AI: 24/7 learning support\n
             ^ • Traditional: Generic feedback vs. AI: Targeted recommendations
 
-            + [*] (implement|integrate|adopt) [*] (@ai) [*] (@education) [*]
+            + how to implement ai in education
             - Here's how to implement AI in education:\n
             ^ • Start with clear educational goals and objectives\n
             ^ • Choose appropriate AI tools based on needs\n
@@ -169,13 +255,55 @@
             ^ • Ensure data privacy and security measures\n
             ^ • Monitor and evaluate the effectiveness of AI tools
 
-            + [*] (cost|expensive) [*] (@ai) [*] (@education) [*]
+            + what are the costs of ai in education
             - The cost aspects of AI in education include:\n
             ^ • Initial investment in AI tools and platforms\n
             ^ • Training costs for teachers and staff\n
             ^ • Infrastructure upgrades and maintenance\n
             ^ • Data storage and security measures\n
             ^ • Long-term cost savings through automation
+
+            // Generic patterns for variations
+            + [*] what is [*] (@ai) [*] (@education) [*]
+            @ what is ai in education
+
+            + [*] how [*] (@ai) [*] (@help) [*] (@education) [*]
+            @ how does ai help in education
+
+            + [*] benefit [*] (@ai) [*] (@education) [*]
+            @ what are the benefits of ai in education
+
+            + [*] challenge [*] (@ai) [*] (@education) [*]
+            @ what are the challenges of ai in education
+
+            + [*] (@help) [*] teacher [*]
+            @ how does ai help teachers
+
+            + [*] (@help) [*] student [*]
+            @ how does ai help students
+
+            + [*] (@tools) [*] (@education) [*]
+            @ what ai tools are used in education
+
+            + [*] future [*] (@ai) [*] (@education) [*]
+            @ what is the future of ai in education
+
+            + [*] example [*] (@ai) [*] (@education) [*]
+            @ what are examples of ai in education
+
+            + [*] (compare|difference|traditional) [*] (@ai) [*] (@education) [*]
+            @ compare traditional and ai education
+
+            + [*] (implement|integrate|adopt) [*] (@ai) [*] (@education) [*]
+            @ how to implement ai in education
+
+            + [*] (cost|price|expensive) [*] (@ai) [*] (@education) [*]
+            @ what are the costs of ai in education
+
+            + (@greetings)
+            - Hello! I'm your AI education assistant. How can I help you learn about AI in education today?
+            - Hi there! I'm here to help you learn about AI in education. What would you like to know?
+            - Welcome! I'm your AI education guide. What aspects of AI in education interest you?
 
             + what can you do
             - I can help you learn about AI in education! You can ask me about:\n
@@ -194,12 +322,6 @@
             ^ • Challenges in AI education\n
             ^ • AI tools for education\n
             ^ • Impact on students or teachers
-            - I'm not quite sure about that. Here are some topics you can ask about:\n
-            ^ • How AI transforms education\n
-            ^ • Examples of AI in classrooms\n
-            ^ • Future of AI in education\n
-            ^ • Implementation strategies\n
-            ^ • Costs and benefits
         `;
 
         // Initialize the bot
@@ -270,6 +392,19 @@
                 sendMessage();
             }
         });
+
+        function askQuestion(question) {
+            if (!botReady) {
+                addMessageToDisplay('Please wait for the bot to initialize...', 'error');
+                return;
+            }
+
+            // Set the question in the input field
+            userInput.value = question;
+            
+            // Trigger the send message function
+            sendMessage();
+        }
     </script>
 </body>
 </html>
