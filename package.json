@@ -7,9 +7,6 @@
     "start": "vercel dev",
     "build": "vercel build"
   },
-  "dependencies": {
-    "openai": "^4.24.1"
-  },
   "devDependencies": {
     "vercel": "^33.0.1"
   }
