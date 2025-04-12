@@ -1,8 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "npm install",
-  "installCommand": "npm install",
-  "framework": null,
   "builds": [
     {
       "src": "api/**/*.js",
@@ -23,8 +20,8 @@
   ],
   "routes": [
     {
-      "src": "/api/chat",
-      "dest": "/api/chat/route.js"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
       "handle": "filesystem"
