@@ -71,6 +71,9 @@
             ! array greetings = hello hi hey howdy
             ! array ai = ai artificial intelligence machine learning ml
             ! array education = education learning teaching study studying school classroom teaching
+            ! array help = help assist support aid improve enhance
+            ! array impact = impact effect influence change transform revolutionize
+            ! array tools = tools technology systems software applications platforms programs
 
             + (@greetings)
             - Hello! I'm your AI education assistant. How can I help you learn about AI in education today?
@@ -86,17 +89,31 @@
             + what is ai in education
             - AI in education combines artificial intelligence technology with teaching and learning to create smarter, more personalized educational experiences. It includes tools for automated grading, personalized learning paths, intelligent tutoring systems, and data analytics to improve student outcomes.
 
-            + what can you do
-            - I can help you learn about AI in education! You can ask me about:\n
-            ^ • How AI is transforming education\n
-            ^ • Benefits and challenges of AI in learning\n
-            ^ • Practical applications of AI in classrooms\n
-            ^ • Future trends in educational technology
+            + [*] (how|ways) [*] (@ai) [*] (@help|@impact) [*] (@education) [*]
+            - AI is transforming education in several important ways:\n
+            ^ • Creating personalized learning paths for each student\n
+            ^ • Providing instant feedback and assessment\n
+            ^ • Automating administrative tasks for teachers\n
+            ^ • Offering 24/7 support through intelligent tutoring systems\n
+            ^ • Analyzing learning patterns to improve educational methods
 
-            + [*] (how|ways) [*] ai [*] (transform|change|improve|impact) [*] education [*]
-            - AI is revolutionizing education through personalized learning experiences, automated grading systems, and intelligent tutoring systems. These technologies help teachers focus more on individual student needs while providing immediate feedback and adaptive learning paths.
+            + [*] (@help|@impact) [*] student [*]
+            - AI helps students in multiple ways:\n
+            ^ • Providing personalized learning experiences\n
+            ^ • Offering immediate feedback on assignments\n
+            ^ • Identifying and filling knowledge gaps\n
+            ^ • Adapting to individual learning speeds\n
+            ^ • Making learning more engaging through interactive content
 
-            + [*] benefit [*] ai [*] education [*]
+            + [*] (@tools) [*] (@ai) [*] (@education) [*]
+            - Here are some common AI tools used in education:\n
+            ^ • Intelligent Tutoring Systems (ITS)\n
+            ^ • Automated Assessment Tools\n
+            ^ • Learning Management Systems (LMS)\n
+            ^ • Educational Chatbots\n
+            ^ • Adaptive Learning Platforms
+
+            + [*] benefit [*] (@ai) [*] (@education) [*]
             - The key benefits of AI in education include:\n
             ^ • Personalized learning paths for each student\n
             ^ • 24/7 availability of learning resources\n
@@ -104,7 +121,7 @@
             ^ • Data-driven insights to improve educational outcomes\n
             ^ • Adaptive learning systems that adjust to student needs
 
-            + [*] (challenge|problem|issue|concern) [*] ai [*] education [*]
+            + [*] (challenge|problem|issue|concern) [*] (@ai) [*] (@education) [*]
             - Some major challenges in AI education include:\n
             ^ • Ensuring equal access to AI technology\n
             ^ • Protecting student privacy and data security\n
@@ -112,7 +129,7 @@
             ^ • Maintaining the human element in education\n
             ^ • Managing the cost of implementing AI solutions
 
-            + [*] (help|assist|support) [*] teacher [*]
+            + [*] (@help|@impact) [*] teacher [*]
             - AI helps teachers in several ways:\n
             ^ • Automating administrative tasks like grading\n
             ^ • Providing detailed analytics about student performance\n
@@ -120,7 +137,7 @@
             ^ • Creating customized lesson plans\n
             ^ • Identifying students who need extra help
 
-            + [*] future [*] ai [*] education [*]
+            + [*] future [*] (@ai) [*] (@education) [*]
             - The future of AI in education looks promising with:\n
             ^ • More sophisticated personalized learning systems\n
             ^ • Virtual and augmented reality for immersive learning\n
@@ -128,7 +145,7 @@
             ^ • Intelligent tutoring systems that mimic human teachers\n
             ^ • Real-time feedback and assessment tools
 
-            + [*] example [*] ai [*] education [*]
+            + [*] example [*] (@ai) [*] (@education) [*]
             - Here are some practical examples of AI in education:\n
             ^ • Intelligent tutoring systems that provide personalized help\n
             ^ • Automated grading systems for assignments and tests\n
@@ -136,10 +153,53 @@
             ^ • Learning analytics that track student progress\n
             ^ • Adaptive learning platforms that adjust to student needs
 
+            + [*] (difference|compare) [*] traditional [*] (@ai) [*] (@education) [*]
+            - Here are the key differences between traditional and AI-enhanced education:\n
+            ^ • Traditional: One-size-fits-all vs. AI: Personalized learning paths\n
+            ^ • Traditional: Periodic assessments vs. AI: Continuous feedback\n
+            ^ • Traditional: Fixed pace vs. AI: Adaptive learning speed\n
+            ^ • Traditional: Limited availability vs. AI: 24/7 learning support\n
+            ^ • Traditional: Generic feedback vs. AI: Targeted recommendations
+
+            + [*] (implement|integrate|adopt) [*] (@ai) [*] (@education) [*]
+            - Here's how to implement AI in education:\n
+            ^ • Start with clear educational goals and objectives\n
+            ^ • Choose appropriate AI tools based on needs\n
+            ^ • Provide proper training for teachers and staff\n
+            ^ • Ensure data privacy and security measures\n
+            ^ • Monitor and evaluate the effectiveness of AI tools
+
+            + [*] (cost|expensive) [*] (@ai) [*] (@education) [*]
+            - The cost aspects of AI in education include:\n
+            ^ • Initial investment in AI tools and platforms\n
+            ^ • Training costs for teachers and staff\n
+            ^ • Infrastructure upgrades and maintenance\n
+            ^ • Data storage and security measures\n
+            ^ • Long-term cost savings through automation
+
+            + what can you do
+            - I can help you learn about AI in education! You can ask me about:\n
+            ^ • How AI is transforming education\n
+            ^ • Benefits and challenges of AI in learning\n
+            ^ • Practical applications of AI in classrooms\n
+            ^ • Future trends in educational technology\n
+            ^ • Costs and implementation strategies\n
+            ^ • Differences from traditional education\n
+            ^ • Impact on students and teachers
+
             + *
-            - I understand you're asking about {formal}<star>{/formal}. Could you rephrase your question about AI in education? You can ask about its benefits, challenges, future applications, or how it helps teachers.
-            - I'm not quite sure about that specific topic. Try asking about AI's role in education, its benefits, challenges, or how it helps teachers and students.
-            - Could you rephrase that? I'm best at answering questions about how AI is used in education, its benefits, challenges, and future trends.
+            - I understand you're asking about {formal}<star>{/formal}. Try asking about:\n
+            ^ • How AI helps in education\n
+            ^ • Benefits of AI in learning\n
+            ^ • Challenges in AI education\n
+            ^ • AI tools for education\n
+            ^ • Impact on students or teachers
+            - I'm not quite sure about that. Here are some topics you can ask about:\n
+            ^ • How AI transforms education\n
+            ^ • Examples of AI in classrooms\n
+            ^ • Future of AI in education\n
+            ^ • Implementation strategies\n
+            ^ • Costs and benefits
         `;
 
         // Initialize the bot
