@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/rivescript@2.2.0/dist/rivescript.min.js"></script>
 </head>
 <body>
     <header>
@@ -54,61 +55,135 @@
     </footer>
 
     <script>
-        const messages = [
-            { 
-                role: "system", 
-                content: "You are an educational AI assistant specializing in explaining how AI is transforming education. Keep responses concise (2-3 sentences) and focused on educational topics. Use simple language and practical examples. Help students understand AI's role in education, its benefits, challenges, and future implications."
-            },
-            {
-                role: "assistant",
-                content: "Hello! I'm your AI education assistant. I'm here to help you learn about AI in education. What would you like to learn about?"
+        const bot = new RiveScript();
+        let botReady = false;
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.querySelector('.input-container button');
+
+        // Disable input until bot is ready
+        userInput.disabled = true;
+        sendButton.disabled = true;
+
+        // Define the bot's responses
+        const botScript = `
+            ! version = 2.0
+
+            ! array greetings = hello hi hey howdy
+            ! array ai = ai artificial intelligence machine learning ml
+            ! array education = education learning teaching study studying school classroom teaching
+
+            + (@greetings)
+            - Hello! I'm your AI education assistant. How can I help you learn about AI in education today?
+            - Hi there! I'm here to help you learn about AI in education. What would you like to know?
+            - Welcome! I'm your AI education guide. What aspects of AI in education interest you?
+
+            + what is [ai artificial intelligence]
+            - Artificial Intelligence (AI) is a technology that enables computers to learn from experience, understand complex tasks, and work in ways that resemble human intelligence. In education, AI helps create personalized learning experiences and assists teachers with various tasks.
+
+            + what is [education learning teaching]
+            - Education is the process of facilitating learning and acquiring knowledge, skills, values, and understanding. Modern education is being transformed by AI technologies to become more personalized, accessible, and effective for students of all backgrounds.
+
+            + what is ai in education
+            - AI in education combines artificial intelligence technology with teaching and learning to create smarter, more personalized educational experiences. It includes tools for automated grading, personalized learning paths, intelligent tutoring systems, and data analytics to improve student outcomes.
+
+            + what can you do
+            - I can help you learn about AI in education! You can ask me about:\n
+            ^ • How AI is transforming education\n
+            ^ • Benefits and challenges of AI in learning\n
+            ^ • Practical applications of AI in classrooms\n
+            ^ • Future trends in educational technology
+
+            + [*] (how|ways) [*] ai [*] (transform|change|improve|impact) [*] education [*]
+            - AI is revolutionizing education through personalized learning experiences, automated grading systems, and intelligent tutoring systems. These technologies help teachers focus more on individual student needs while providing immediate feedback and adaptive learning paths.
+
+            + [*] benefit [*] ai [*] education [*]
+            - The key benefits of AI in education include:\n
+            ^ • Personalized learning paths for each student\n
+            ^ • 24/7 availability of learning resources\n
+            ^ • Automated grading to save teachers' time\n
+            ^ • Data-driven insights to improve educational outcomes\n
+            ^ • Adaptive learning systems that adjust to student needs
+
+            + [*] (challenge|problem|issue|concern) [*] ai [*] education [*]
+            - Some major challenges in AI education include:\n
+            ^ • Ensuring equal access to AI technology\n
+            ^ • Protecting student privacy and data security\n
+            ^ • Training teachers to effectively use AI tools\n
+            ^ • Maintaining the human element in education\n
+            ^ • Managing the cost of implementing AI solutions
+
+            + [*] (help|assist|support) [*] teacher [*]
+            - AI helps teachers in several ways:\n
+            ^ • Automating administrative tasks like grading\n
+            ^ • Providing detailed analytics about student performance\n
+            ^ • Offering personalized learning recommendations\n
+            ^ • Creating customized lesson plans\n
+            ^ • Identifying students who need extra help
+
+            + [*] future [*] ai [*] education [*]
+            - The future of AI in education looks promising with:\n
+            ^ • More sophisticated personalized learning systems\n
+            ^ • Virtual and augmented reality for immersive learning\n
+            ^ • AI-powered tools that adapt to each student's learning style\n
+            ^ • Intelligent tutoring systems that mimic human teachers\n
+            ^ • Real-time feedback and assessment tools
+
+            + [*] example [*] ai [*] education [*]
+            - Here are some practical examples of AI in education:\n
+            ^ • Intelligent tutoring systems that provide personalized help\n
+            ^ • Automated grading systems for assignments and tests\n
+            ^ • Chatbots that answer student questions 24/7\n
+            ^ • Learning analytics that track student progress\n
+            ^ • Adaptive learning platforms that adjust to student needs
+
+            + *
+            - I understand you're asking about {formal}<star>{/formal}. Could you rephrase your question about AI in education? You can ask about its benefits, challenges, future applications, or how it helps teachers.
+            - I'm not quite sure about that specific topic. Try asking about AI's role in education, its benefits, challenges, or how it helps teachers and students.
+            - Could you rephrase that? I'm best at answering questions about how AI is used in education, its benefits, challenges, and future trends.
+        `;
+
+        // Initialize the bot
+        async function initBot() {
+            try {
+                await bot.stream(botScript);
+                await bot.sortReplies();
+                botReady = true;
+                userInput.disabled = false;
+                sendButton.disabled = false;
+                userInput.placeholder = "Ask me anything about AI in education...";
+            } catch (error) {
+                console.error('Error initializing bot:', error);
+                addMessageToDisplay('Sorry, I had trouble initializing. Please refresh the page.', 'error');
             }
-        ];
+        }
+
+        initBot();
 
         async function sendMessage() {
-            const userInput = document.getElementById('userInput');
+            if (!botReady) {
+                addMessageToDisplay('Please wait for the bot to initialize...', 'error');
+                return;
+            }
+
             const message = userInput.value.trim();
-            
             if (!message) return;
 
-            // Add user message to display
-            addMessageToDisplay(message, 'user');
-            messages.push({ role: "user", content: message });
-            userInput.value = '';
-
-            // Show typing indicator
-            const typingIndicator = showTypingIndicator();
-
             try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ messages }),
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.details || errorData.error || 'Network response was not ok');
-                }
-
-                const data = await response.json();
-                const assistantMessage = data.choices[0].message.content;
+                // Add user message to display
+                addMessageToDisplay(message, 'user');
                 
-                // Remove typing indicator and add assistant message
-                typingIndicator.remove();
-                addMessageToDisplay(assistantMessage, 'assistant');
-                messages.push({ role: "assistant", content: assistantMessage });
-
+                // Get bot's response
+                const reply = await bot.reply("user", message);
+                
+                // Add bot's response to display
+                addMessageToDisplay(reply, 'assistant');
+                
+                // Clear input
+                userInput.value = '';
+                userInput.focus();
             } catch (error) {
-                console.error('Error:', error);
-                typingIndicator.remove();
-                
-                let errorMessage = "Sorry, I'm having trouble responding right now. ";
-                errorMessage += error.message || "Please try again later.";
-                
-                addMessageToDisplay(errorMessage, 'error');
+                console.error('Error getting reply:', error);
+                addMessageToDisplay('Sorry, I had trouble responding. Please try again.', 'error');
             }
         }
 
@@ -119,28 +194,18 @@
             
             if (type === 'user') {
                 messageDiv.innerHTML = `<strong>You:</strong> ${message}`;
-            } else if (type === 'assistant') {
-                messageDiv.innerHTML = `<strong>Assistant:</strong> ${message}`;
+            } else if (type === 'error') {
+                messageDiv.innerHTML = `<strong>Error:</strong> ${message}`;
             } else {
-                messageDiv.innerHTML = message;
+                messageDiv.innerHTML = `<strong>Assistant:</strong> ${message.replace(/\n/g, '<br>')}`;
             }
             
             chatDisplay.appendChild(messageDiv);
             chatDisplay.scrollTop = chatDisplay.scrollHeight;
         }
 
-        function showTypingIndicator() {
-            const chatDisplay = document.getElementById('chatDisplay');
-            const indicator = document.createElement('div');
-            indicator.className = 'typing-indicator';
-            indicator.innerHTML = '<span></span><span></span><span></span>';
-            chatDisplay.appendChild(indicator);
-            chatDisplay.scrollTop = chatDisplay.scrollHeight;
-            return indicator;
-        }
-
         // Handle Enter key press
-        document.getElementById('userInput').addEventListener('keypress', function(e) {
+        userInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 sendMessage();
             }
