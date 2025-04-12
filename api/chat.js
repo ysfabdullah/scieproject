@@ -1,19 +1,19 @@
-const { Configuration, OpenAIApi } = require('openai');
+import OpenAI from 'openai';
 
-module.exports = async (req, res) => {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
-  // Handle preflight requests
+export default async function handler(req, res) {
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    );
+    return res.status(200).end();
   }
 
   if (req.method !== 'POST') {
@@ -27,54 +27,40 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: 'Messages are required' });
     }
 
-    // Check if API key is set
     if (!process.env.OPENAI_API_KEY) {
-      console.error('OpenAI API key is not set in environment variables');
       return res.status(500).json({ 
-        error: 'Server configuration error',
-        details: 'OpenAI API key is not configured'
+        error: 'OpenAI API key not configured', 
+        details: 'Please add your OpenAI API key to environment variables' 
       });
     }
 
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-
-    const openai = new OpenAIApi(configuration);
-
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: messages,
       temperature: 0.7,
+      max_tokens: 500
     });
 
-    res.status(200).json(completion.data);
+    return res.status(200).json({
+      choices: [{
+        message: completion.choices[0].message
+      }]
+    });
+
   } catch (error) {
-    console.error('Error:', error);
-    
-    // Handle specific error cases
+    console.error('Error processing request:', error);
+
     if (error.response) {
-      // The request was made and the server responded with a status code
-      // that falls out of the range of 2xx
-      console.error('Error response:', error.response.data);
-      return res.status(error.response.status).json({ 
-        error: 'API Error',
-        details: error.response.data.error?.message || 'Unknown error occurred'
-      });
-    } else if (error.request) {
-      // The request was made but no response was received
-      console.error('No response received:', error.request);
-      return res.status(500).json({ 
-        error: 'No response from API',
-        details: 'The request was made but no response was received'
-      });
-    } else {
-      // Something happened in setting up the request that triggered an Error
-      console.error('Error setting up request:', error.message);
-      return res.status(500).json({ 
-        error: 'Request setup error',
-        details: error.message
+      // OpenAI API error
+      return res.status(error.response.status).json({
+        error: 'OpenAI API error',
+        details: error.response.data.error.message
       });
     }
+
+    return res.status(500).json({
+      error: 'Internal server error',
+      details: error.message
+    });
   }
-}; 
+} 
